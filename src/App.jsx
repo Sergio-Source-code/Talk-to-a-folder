@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from "react"
 
-const GOOGLE_CLIENT_ID = '840257145175-n9pti86ilh2lueski6q6shbuocanst97.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 const DRIVE_API = 'https://www.googleapis.com/drive/v3/files';
 const DOC_MIME = 'application/vnd.google-apps.document';
 const TXT_MIME = 'text/plain';
@@ -253,7 +253,7 @@ function ChatAgent({ driveLink, accessToken, files }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer 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`,
+          'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           model: 'gpt-4.1',
