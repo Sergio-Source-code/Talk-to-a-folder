@@ -76,19 +76,29 @@ function App() {
   }
 
   useEffect(() => {
-    if (!document.getElementById('google-identity')) {
-      const script = document.createElement('script')
-      script.src = 'https://accounts.google.com/gsi/client'
-      script.async = true
-      script.defer = true
-      script.id = 'google-identity'
-      script.onload = () => setScriptLoaded(true)
-      script.onerror = () => setButtonError(true)
-      document.body.appendChild(script)
-    } else {
-      setScriptLoaded(true)
+    function onScriptLoad() {
+      setScriptLoaded(true);
+      // Immediately try to init button if not authenticated and ref is available
+      if (googleButtonRef.current && !authenticated && window.google) {
+        try { initGoogleAuthButton(); } catch {}
+      }
     }
-  }, [])
+    if (!document.getElementById('google-identity')) {
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.id = 'google-identity';
+      script.onload = onScriptLoad;
+      script.onerror = () => setButtonError(true);
+      document.body.appendChild(script);
+    } else {
+      setScriptLoaded(true);
+      if (googleButtonRef.current && !authenticated && window.google) {
+        try { initGoogleAuthButton(); } catch {}
+      }
+    }
+  }, []);
 
   function initGoogleAuthButton() {
     window.google.accounts.oauth2.initTokenClient({
