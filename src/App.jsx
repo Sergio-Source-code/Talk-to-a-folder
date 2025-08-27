@@ -7,6 +7,22 @@ const DOC_MIME = 'application/vnd.google-apps.document';
 const TXT_MIME = 'text/plain';
 const ERROR_DOC = '[Non-text file or unsupported type]';
 
+async function fetchFileContent({ id, mimeType }, token) {
+  if (mimeType === DOC_MIME) {
+    const res = await fetch(`${DRIVE_API}/${id}/export?mimeType=text/plain`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return await res.text();
+  } else if (mimeType === TXT_MIME) {
+    const res = await fetch(`${DRIVE_API}/${id}?alt=media`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return await res.text();
+  } else {
+    return ERROR_DOC;
+  }
+}
+
 function App() {
   const [authenticated, setAuthenticated] = useState(false)
   const [accessToken, setAccessToken] = useState(null)
@@ -25,21 +41,7 @@ function App() {
     return { type: null, id: null };
   }
 
-  async function fetchFileContent({ id, mimeType }, token) {
-    if (mimeType === DOC_MIME) {
-      const res = await fetch(`${DRIVE_API}/${id}/export?mimeType=text/plain`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      return await res.text();
-    } else if (mimeType === TXT_MIME) {
-      const res = await fetch(`${DRIVE_API}/${id}?alt=media`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      return await res.text();
-    } else {
-      return ERROR_DOC;
-    }
-  }
+
 
   async function fetchFilesAndContentsOrDoc(link, token) {
     try {
