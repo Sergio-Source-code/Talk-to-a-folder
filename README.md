@@ -3,20 +3,23 @@
 
 MVP app to chat with the contents of a Google Drive folder or document.
 
+
 ## Setup
 
-1. Install dependencies (optional):
+1. Replace variables in `.env` with API keys.
+
+2. Install dependencies (optional):
 	```
 	npm install
  	```
-1. Start the dev server:
+3. Start the dev server:
 	```
 	npm run dev
 	```
-2. Open [http://localhost:5173](http://localhost:5173) in your browser.
-3. Log in with Google.
-4. Paste a Google Drive folder link or Google Doc link.
-5. Start chatting!
+4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+5. Log in with Google.
+6. Paste a Google Drive folder link or Google Doc link.
+7. Start chatting!
 
 Prompt suggestions:
 * Summarize file _ for me?
