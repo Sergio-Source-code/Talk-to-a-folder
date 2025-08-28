@@ -269,7 +269,7 @@ function ChatAgent({ driveLink, accessToken, files }) {
         })
       })
       const data = await res.json()
-      const reply = data.choices?.[0]?.message?.content || 'No response.'
+      const reply = data.choices?.[0]?.message?.content || 'No response. Please try again soon.'
       setMessages(msgs => [...msgs, { role: 'assistant', content: reply }])
     } catch {
       setMessages(msgs => [...msgs, { role: 'assistant', content: 'Error contacting OpenAI API.' }])
