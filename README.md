@@ -5,6 +5,10 @@ MVP app to chat with the contents of a Google Drive folder or document.
 
 ## Setup
 
+1. Install dependencies (optional):
+	```
+	npm install
+ 	```
 1. Start the dev server:
 	```
 	npm run dev
