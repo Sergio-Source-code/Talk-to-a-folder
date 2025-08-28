@@ -14,4 +14,9 @@ MVP app to chat with the contents of a Google Drive folder or document.
 4. Paste a Google Drive folder link or Google Doc link.
 5. Start chatting!
 
+Prompt suggestions:
+* Summarize file _ for me?
+* How many files are there in the folder?
+* Are there any files about research?
+
 <img width="2353" height="1310" alt="Screenshot 2025-08-27 190911" src="https://github.com/user-attachments/assets/0a037c6c-524f-44f0-9948-4209d93dad78" />

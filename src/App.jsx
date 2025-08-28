@@ -41,8 +41,6 @@ function App() {
     return { type: null, id: null };
   }
 
-
-
   async function fetchFilesAndContentsOrDoc(link, token) {
     try {
       const { type, id } = parseGoogleLink(link);
@@ -78,7 +76,6 @@ function App() {
   useEffect(() => {
     function onScriptLoad() {
       setScriptLoaded(true);
-      // Immediately try to init button if not authenticated and ref is available
       if (googleButtonRef.current && !authenticated && window.google) {
         try { initGoogleAuthButton(); } catch {}
       }
@@ -93,10 +90,7 @@ function App() {
       script.onerror = () => setButtonError(true);
       document.body.appendChild(script);
     } else {
-      setScriptLoaded(true);
-      if (googleButtonRef.current && !authenticated && window.google) {
-        try { initGoogleAuthButton(); } catch {}
-      }
+      onScriptLoad();
     }
   }, []);
 
@@ -148,7 +142,6 @@ function App() {
     }
   }, [scriptLoaded, authenticated]);
 
-
   const handleLinkSubmit = async (e) => {
     e.preventDefault()
     if (!driveLink) return
@@ -156,13 +149,17 @@ function App() {
     setChatStarted(true)
   }
 
+  if (typeof document !== 'undefined') {
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+  }
   return (
-    <div style={{ minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#fafbfc', margin: 0, padding: 0 }}>
+    <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#fafbfc', margin: 0, padding: 0, overflow: 'hidden' }}>
       {!authenticated ? (
         buttonError ? (
           <div style={{ color: 'red', fontSize: 16 }}>Google Sign-In failed to load. Check client_id and network.</div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', width: '100vw' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', width: '100vw', overflow: 'hidden' }}>
             <h1 style={{ fontWeight: 600, fontSize: 32, marginBottom: 40, letterSpacing: 1, color: '#222' }}>Talk to a Folder</h1>
             <div ref={googleButtonRef} style={{ display: 'flex', justifyContent: 'center' }} />
             {!scriptLoaded && <div style={{ color: '#888', marginTop: 16 }}>Loading Google Sign-In...</div>}
@@ -171,7 +168,7 @@ function App() {
       ) : !chatStarted ? (
         <>
           <button onClick={() => { setAuthenticated(false); setAccessToken(null); }} style={{ position: 'absolute', top: 24, right: 32, background: '#fff', border: '1px solid #ddd', borderRadius: 6, padding: '0.5rem 1.5rem', fontSize: 15, cursor: 'pointer' }}>Log out</button>
-          <div style={{ position: 'fixed', left: 0, right: 0, bottom: '10vh', display: 'flex', justifyContent: 'center', width: '100vw' }}>
+          <div style={{ position: 'fixed', left: 0, right: 0, bottom: '10vh', display: 'flex', justifyContent: 'center', width: '100vw', overflow: 'hidden' }}>
             <form onSubmit={handleLinkSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16, minWidth: 600, alignItems: 'center', background: '#fff', borderRadius: 16, boxShadow: '0 2px 8px #eee', padding: 32 }}>
               <input
                 type="text"
@@ -192,7 +189,6 @@ function App() {
           <button onClick={() => { setAuthenticated(false); setAccessToken(null); setChatStarted(false); setDriveLink(''); }} style={{ position: 'absolute', top: 24, right: 32, background: '#fff', border: '1px solid #ddd', borderRadius: 6, padding: '0.5rem 1.5rem', fontSize: 15, cursor: 'pointer' }}>Log out</button>
           <div style={{
             width: 600,
-            maxWidth: '90vw',
             background: '#fff',
             borderRadius: 16,
             boxShadow: '0 2px 8px #eee',
@@ -207,6 +203,7 @@ function App() {
             flexDirection: 'column',
             justifyContent: 'flex-end',
             alignItems: 'center',
+            overflow: 'hidden'
           }}>
             <ChatAgent driveLink={driveLink} accessToken={accessToken} files={files} />
           </div>
